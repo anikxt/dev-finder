@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ModeToggle } from '@/src/components/mode-toggle';
+import { ModeToggle } from '@/components/mode-toggle';
 import { Providers } from './provider';
 import { Header } from './header';
 
