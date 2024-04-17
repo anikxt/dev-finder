@@ -14,25 +14,33 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { createRoomAction } from './actions';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
-  username: z.string().min(2).max(50),
+  name: z.string().min(1).max(50),
+  description: z.string().min(1).max(250),
+  githubRepo: z.string().min(1).max(50),
+  language: z.string().min(1).max(50),
 });
 
 export function CreateRoomForm() {
+  const router = useRouter();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      name: '',
+      description: '',
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // TODO: invoke a server action to store the data in our database
+    await createRoomAction(values);
+    router.push('/');
   }
 
   return (
@@ -40,15 +48,64 @@ export function CreateRoomForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input {...field} />
+              </FormControl>
+              <FormDescription>This is your public room name.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Input {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                Please describe what you are be coding on
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="githubRepo"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Github Repo</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormDescription>
+                Please put a link to the project you are working on
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="language"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Primary Programming Language</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormDescription>
+                List the primary programming language you are working with
               </FormDescription>
               <FormMessage />
             </FormItem>
