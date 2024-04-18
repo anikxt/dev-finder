@@ -1,6 +1,5 @@
+import { TagsList, splitTags } from '@/components/tags-list';
 import { Button } from '@/components/ui/button';
-import { db } from '@/db';
-import Link from 'next/link';
 import {
   Card,
   CardContent,
@@ -9,9 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { getRooms } from '@/data-access/rooms';
 import { Room } from '@/db/schema';
 import { GithubIcon } from 'lucide-react';
-import { getRooms } from '@/data-access/rooms';
+import Link from 'next/link';
 
 function RoomCard({ room }: { room: Room }) {
   return (
@@ -20,7 +20,8 @@ function RoomCard({ room }: { room: Room }) {
         <CardTitle>{room.name}</CardTitle>
         <CardDescription>{room.description}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col gap-4">
+        <TagsList tags={splitTags(room.tags)} />
         {room.githubRepo && (
           <Link
             href={room.githubRepo}
@@ -35,7 +36,7 @@ function RoomCard({ room }: { room: Room }) {
       </CardContent>
       <CardFooter>
         <Button asChild>
-          <Link href={`/room/${room.id}`}>Join Room</Link>
+          <Link href={`/rooms/${room.id}`}>Join Room</Link>
         </Button>
       </CardFooter>
     </Card>
