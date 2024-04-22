@@ -22,7 +22,7 @@ export async function editRoomAction(roomData: Omit<Room, 'userId'>) {
 
   await editRoom({ ...roomData, userId: room.userId });
 
-  revalidatePath('your-rooms');
+  revalidatePath('/your-rooms');
   revalidatePath(`/edit-room/${roomData.id}`);
   redirect('/your-rooms');
 }

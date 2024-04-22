@@ -34,6 +34,8 @@ export function SearchBar() {
 
   const search = query.get('search');
 
+  console.log(search);
+
   useEffect(() => {
     form.setValue('search', search ?? '');
   }, [search, form]);
@@ -41,9 +43,9 @@ export function SearchBar() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.search) {
-      router.push(`/?search=${values.search}`);
+      router.push(`/browse?search=${values.search}`);
     } else {
-      router.push('/');
+      router.push('/browse');
     }
   }
 
